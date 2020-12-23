@@ -25,13 +25,33 @@ for($i=0; $i<$rows; $i++){
     $row = $result->fetch_array(MYSQLI_NUM);
 
     echo "<tr><td>" .($i+1). "</td>";
-    for($j=0;$j<4;$j++){
+    // displaying the isbn, author, title only
+    for($j=0;$j<3;$j++){
         echo "<td>" .$row[$j] . "</td>";
     }
+    echo "<td><input type='text' name='price' size='5' value='$row[3]' onchange='updatePrice($row[0], this.value)'></td>";
     echo "</tr>";
 }
 echo "</table>";
 echo "</form>";
 
-
 ?>
+
+<script>
+function updatePrice(isbn, price){
+    if(isbn=='' && price==''){
+        // do nothing
+    }
+    else{
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                // do something here;
+                //alert(this.responseText);
+            }
+        };
+        xmlhttp.open('GET', 'updateprice.php?isbn='+isbn+'&price='+price, true);
+        xmlhttp.send();
+    }
+}
+</script>
